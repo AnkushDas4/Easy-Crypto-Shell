@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Crypto Shell | Documentation</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        /* Custom tweaks to make it look like a high-end dev tool */
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        pre[class*="language-"] { border-radius: 0.5rem; margin: 1.5rem 0; background: #1e293b !important; border: 1px solid #334155; }
+        code { font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.9rem; }
+        .gradient-text { background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="antialiased selection:bg-sky-500 selection:text-white">
+
+    <nav class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold tracking-tight text-white">
+                Easy<span class="text-sky-400">Crypto</span>Shell
+            </div>
+            <a href="https://github.com/YOUR_GITHUB_USERNAME/easy-crypto-shell" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">
+                View on GitHub &rarr;
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        
+        <header class="mb-16">
+            <h1 class="text-5xl font-extrabold text-white mb-6 tracking-tight">
+                The Universal <br><span class="gradient-text">Web3 Wrapper.</span>
+            </h1>
+            <p class="text-xl text-slate-400 leading-relaxed max-w-2xl">
+                A single, configuration-driven API to read, write, and manage native coins and tokens across thousands of EVM networks and Solana. No heavy math, no complex ABIs.
+            </p>
+        </header>
+
+        <section class="mb-16" id="installation">
+            <h2 class="text-2xl font-semibold text-white mb-4 border-b border-slate-800 pb-2">Installation</h2>
+            <p class="text-slate-400 mb-4">Install the shell and its peer dependencies via NPM:</p>
+            <pre><code class="language-bash">npm install easy-crypto-shell ethers @solana/web3.js @solana/spl-token bs58</code></pre>
+        </section>
+
+        <section class="mb-16" id="quick-start">
+            <h2 class="text-2xl font-semibold text-white mb-4 border-b border-slate-800 pb-2">Quick Start</h2>
+            <p class="text-slate-400 mb-4">Initialize the shell by passing the name of the chain you want to interact with. The engine handles the architecture routing automatically.</p>
+            <pre><code class="language-javascript">const { UniversalWallet } = require("easy-crypto-shell");
+
+// Initialize chains instantly
+const ethWallet = new UniversalWallet("ethereum");
+const polyWallet = new UniversalWallet("polygon");
+const solWallet = new UniversalWallet("solana");</code></pre>
+        </section>
+
+        <section class="mb-16" id="reading">
+            <h2 class="text-2xl font-semibold text-white mb-4 border-b border-slate-800 pb-2">1. Reading Native Balances</h2>
+            <p class="text-slate-400 mb-4">Fetch formatted balances without worrying about Wei, Gwei, or Lamports.</p>
+            <pre><code class="language-javascript">const vitalikAddr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+const solTreasury = "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg";
+
+// Returns formatted string (e.g., "1.5")
+const ethBal = await ethWallet.getBalance(vitalikAddr);
+const solBal = await solWallet.getBalance(solTreasury);</code></pre>
+        </section>
+
+        <section class="mb-16" id="writing">
+            <h2 class="text-2xl font-semibold text-white mb-4 border-b border-slate-800 pb-2">2. Sending Transactions</h2>
+            <p class="text-slate-400 mb-4">Compile, sign, and broadcast transactions using the exact same method across all architectures.</p>
+            <pre><code class="language-javascript">// Sending Polygon (EVM)
+const tx1 = await polyWallet.send(
+    "YOUR_PRIVATE_KEY", 
+    "0xDestinationAddress...", 
+    "0.05"
+);
+
+// Sending Solana (SVM) - Base58 Private Keys are automatically decoded
+const tx2 = await solWallet.send(
+    "YOUR_PHANTOM_PRIVATE_KEY", 
+    "DestinationBase58Address...", 
+    0.05
+);</code></pre>
+        </section>
+
+        <section class="mb-16" id="tokens">
+            <h2 class="text-2xl font-semibold text-white mb-4 border-b border-slate-800 pb-2">3. Universal Token Engine</h2>
+            <p class="text-slate-400 mb-4">Read and send ERC20 and SPL tokens. For Solana, Associated Token Accounts (ATAs) are derived and created automatically behind the scenes.</p>
+            <pre><code class="language-javascript">// USDC Contract Addresses
+const usdcPolygon = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359";
+const usdcSolana = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+
+// Read Token Balances
+const polyUsdc = await polyWallet.getTokenBalance(usdcPolygon, vitalikAddr);
+const solUsdc = await solWallet.getTokenBalance(usdcSolana, solTreasury);
+
+// Send Tokens
+await polyWallet.sendToken(privKey, usdcPolygon, toAddress, "10.0");
+await solWallet.sendToken(privKey, usdcSolana, toAddress, 10.0);</code></pre>
+        </section>
+
+        <footer class="mt-20 border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+            <p>Built with configuration-driven architecture. Designed for multi-chain scaling.</p>
+        </footer>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+</html>
